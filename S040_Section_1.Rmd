@@ -1,0 +1,64 @@
+---
+title: "S040_Section_1"
+author: "Meaghan Townsend"
+date: "September 12, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readstata13)
+rm(list = ls())
+wvs <- read.dta13("https://www.dropbox.com/s/e3tc8tdsv7ln2xg/wvs.dta?dl=1")
+```
+
+# Example
+```{r}
+# Create table data
+my_tab <- table(wvs$sex, wvs$boy_educ_more) 
+
+ # Create a proportional table from data, marginalizing on the first dimension (rows)
+prop.table(my_tab, margin = 1)
+
+# Nesting functions within each other (combining above two steps)
+prop.table(table(wvs$sex, wvs$boy_educ_more), margin = 1)
+```
+
+# Section 1 Assignment
+```{r}
+# Reading in data
+dataset <- read.dta13("https://www.dropbox.com/s/x7y1b0uea04y3ig/unit1.dta?dl=1")
+
+# Experimenting!
+
+# Names of variables
+names(dataset)
+
+# Default: print first 6 rows, can also set number of rows
+head(dataset) 
+head(dataset, n = 10)
+
+# Opposite of head: tail. Same principles.
+tail(dataset, n = 5)
+
+# Create labeled factors from variables. "$" means "look for this variable inside dataset."
+dataset$sex <- factor(dataset$sex, levels = c(1, 2), labels = c('Male', 'Female')) 
+
+# Create a variable in dataset called "boy_uni," which tells us if respondent thinks univ. more important for boy than girl
+dataset$boy_uni <- factor(dataset$boy_educ_more %in% c(1, 2), levels = c(FALSE, TRUE), labels = c('Not more important', 'More important'))
+
+# Label values of original dataset. 1:4 means 1, 2, 3, 4
+dataset$boy_educ_more <- factor(dataset$boy_educ_more, levels = 1:4, labels = c('Agree strongly', 'Agree', 'Disagree', 'Disagree strongly'))
+
+# Tabulate countries represented (how many students are from the US?)
+table(dataset$country)
+
+# Make it a proportional table -> convert to proportions
+prop.table(table(dataset$country))
+
+# Round to 2 decimal places
+round(prop.table(table(dat$country)), 2)
+```
+
+
